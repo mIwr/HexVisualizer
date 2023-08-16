@@ -1,0 +1,111 @@
+name: Build, pack and release
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - "**/*.cs"
+      - "**/*.csproj"
+      - "**/*.vsixmanifest"
+      - ".github/workflows/**"
+      
+concurrency:
+  group: proj-${{ github.head_ref }}
+  cancel-in-progress: true
+      
+jobs:
+
+  build_sign_vsix:
+    name: Build, pack and sign VSIX
+    runs-on: windows-latest
+    outputs:
+      release_ver: ${{ steps.proj_version.outputs.newVersion }}
+  
+    steps:
+      - uses: actions/checkout@v3
+      - uses: nuget/setup-nuget@v1
+      - uses: microsoft/setup-msbuild@v1.1
+        with:
+          vs-version: '[17.0,18.0)'
+          msbuild-architecture: x64      
+              
+      - name: Parse project assembly version
+        id: proj_version
+        uses: vers-one/dotnet-project-version-updater@v1.3
+        with:
+          file: "VsixHexVisualizer/Properties/AssemblyInfo.cs"
+          version: '*.*.*.*'
+          
+      - name: Download NuGet dependencies
+        run: nuget restore
+          
+      - name: Build VSIX
+        id: build_vsix
+        run: msbuild .\HexVisualizer.sln /p:Configuration=Release /p:DeployExtension=false /p:ZipPackageCompressionLevel=normal
+
+      - name: Upload unsigned VSIX
+        uses: actions/upload-artifact@v2
+        with:
+          name: uploaded_unsigned_vsix
+          path: .\build\VsixHexVisualizer\Release\VsixHexVisualizer.vsix
+          
+      - name: Checkout private key repo
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.KEYSTORE_GIT_REPOSITORY }}
+          token: ${{ secrets.KEYSTORE_ACCESS_TOKEN }}
+          path: .\private
+          
+      - name: Sign VSIX
+        run: .\vsixsigntool.exe sign /f private\private.pfx /p ${{ secrets.PRIVATE_SIGN_KEY_PASSWORD }} /fd sha256 /v build\VsixHexVisualizer\Release\VsixHexVisualizer.vsix
+        
+      - name: Upload signed VSIX
+        uses: actions/upload-artifact@v2
+        with:
+          name: uploaded_signed_vsix
+          path: .\build\VsixHexVisualizer\Release\VsixHexVisualizer.vsix
+          
+  release:
+    name: Make Github release draft with built artifact
+    needs: build_sign_vsix
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.RELEASE_BUILD_TOKEN }}
+      RELEASE_VERSION: ${{ needs.build_sign_vsix.outputs.release_ver }}
+
+    steps:
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        
+        with:
+          tag_name: ${{ env.RELEASE_VERSION }}
+          release_name: ${{ github.event.repository.name }} ${{ env.RELEASE_VERSION }}
+          draft: true
+          
+      - name: Download unsigned artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: uploaded_unsigned_vsix
+      
+      - name: Upload unsigned artifact to release assets
+        uses: actions/upload-release-asset@v1.0.1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: VsixHexVisualizer.vsix
+          asset_name: ${{ github.event.repository.name }} ${{ env.RELEASE_VERSION }}-unsigned.vsix
+          asset_content_type: application/zip
+          
+      - name: Download signed artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: uploaded_signed_vsix
+      
+      - name: Upload signed artifact to release assets
+        uses: actions/upload-release-asset@v1.0.1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: VsixHexVisualizer.vsix
+          asset_name: ${{ github.event.repository.name }} ${{ env.RELEASE_VERSION }}-signed.vsix
+          asset_content_type: application/zip
