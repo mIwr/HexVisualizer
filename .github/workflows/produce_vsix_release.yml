@@ -1,4 +1,4 @@
-name: Build, pack and release
+name: Build, pack and release extension
 
 on:
   push:
