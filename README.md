@@ -15,9 +15,9 @@ Additional features:
 ## Install
 
 - Visual studio marketplace [installation link](https://marketplace.visualstudio.com/items?itemName=Michael-Krmeine.HexVisualizer-2022)
-- Signed VSIX from repo releases
+- Signed VSIX from repository releases
 
-## Use
+## Usage
 
 on VS 2022 it's pretty straight forward. Just explore a byte array
 
