@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
@@ -14,8 +13,7 @@ namespace VsixHexVisualizer
 {
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
     [InstalledProductRegistration("#110", "#112", "1.0", IconResourceID = 400)] // Info on this package for Help/About
-    [Guid(VisualizerPackage.PackageGuidString)]
-    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "pkgdef, VS and vsixmanifest are valid VS terms")]
+    [Guid(VisualizerPackage.PackageGuidString)]    
     [ProvideAutoLoad(VSConstants.UICONTEXT.NoSolution_string, PackageAutoLoadFlags.BackgroundLoad)]
     public sealed class VisualizerPackage : AsyncPackage
     {
@@ -39,7 +37,7 @@ namespace VsixHexVisualizer
             string sourceFolderFullName;
             string destinationFolderFullName;
             IVsShell shell;
-            object documentsFolderFullNameObject = null;
+            object documentsFolderFullNameObject;
             string documentsFolderFullName;
 
             try
@@ -54,6 +52,10 @@ namespace VsixHexVisualizer
 
                 // Get the destination folder for visualizers
                 shell = await base.GetServiceAsync(typeof(SVsShell)) as IVsShell;
+                if (shell == null)
+                {
+                    return;
+                }
                 shell.GetProperty((int)__VSSPROPID2.VSSPROPID_VisualStudioDir, out documentsFolderFullNameObject);
                 documentsFolderFullName = documentsFolderFullNameObject.ToString();
                 destinationFolderFullName = Path.Combine(documentsFolderFullName, "Visualizers");

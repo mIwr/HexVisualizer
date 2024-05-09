@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="HexVisualizer.MickeyM.59EC5E5E-F3F3-4C8D-8DBE-4117AC415EC1" Version="1.5" Language="en-US" Publisher="MickeyM" />
+        <Identity Id="HexVisualizer.MickeyM.59EC5E5E-F3F3-4C8D-8DBE-4117AC415EC1" Version="1.5.1" Language="en-US" Publisher="MickeyM" />
         <DisplayName>HexVisualizer VS 2022</DisplayName>
         <Description xml:space="preserve">A hex viewer visualizer for byte arrays</Description>
         <MoreInfo>https://github.com/mIwr/HexVisualizer</MoreInfo>

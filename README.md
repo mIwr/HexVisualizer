@@ -5,7 +5,7 @@
 
 HexVisualizer provides a viewer for byte arrays so as to display them in a mini hex window. Very useful for debugging network packets and binary files.
 
-Supports VS 2022 Community or Pro edition. Older [VS 2019](https://marketplace.visualstudio.com/items?itemName=Mika76.HexVisualizer2019&ssr=false#overview), [VS 2017 extension](https://marketplace.visualstudio.com/items?itemName=Mika76.HexVisualizer2017) extensions
+Supports VS 2022 Community or Pro edition. Older [VS 2019](https://marketplace.visualstudio.com/items?itemName=Mika76.HexVisualizer2019&ssr=false#overview), [VS 2017](https://marketplace.visualstudio.com/items?itemName=Mika76.HexVisualizer2017) extensions
 
 Additional features:
 - Visualizing string variables
@@ -14,7 +14,7 @@ Additional features:
 
 ## Install
 
-- Visual studio marketplace [installation link](https://marketplace.visualstudio.com/items?itemName=Michael-Krmeine.HexVisualizer-2022)
+- Visual Studio marketplace [installation link](https://marketplace.visualstudio.com/items?itemName=Michael-Krmeine.HexVisualizer-2022)
 - Signed VSIX from repository releases
 
 ## Usage
