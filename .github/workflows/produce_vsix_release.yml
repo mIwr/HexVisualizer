@@ -50,12 +50,11 @@ jobs:
           name: uploaded_unsigned_vsix
           path: .\build\VsixHexVisualizer\Release\VsixHexVisualizer.vsix
           
-      - name: Checkout private key repo
-        uses: actions/checkout@v3
-        with:
-          repository: ${{ secrets.KEYSTORE_GIT_REPOSITORY }}
-          token: ${{ secrets.KEYSTORE_ACCESS_TOKEN }}
-          path: .\private
+      - name: Extract encoded private key
+        run: echo ${{ secrets.PRIVATE_ENCODED }} > private\private.pfx.enc
+        
+      - name: Decode private key
+        run: certutil -decode private\private.pfx.enc private\private.pfx
           
       - name: Sign VSIX
         run: .\vsixsigntool.exe sign /f private\private.pfx /p ${{ secrets.PRIVATE_SIGN_KEY_PASSWORD }} /fd sha256 /v build\VsixHexVisualizer\Release\VsixHexVisualizer.vsix
