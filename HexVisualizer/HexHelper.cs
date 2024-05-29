@@ -5,7 +5,7 @@ namespace HexVisualizer
 {
     public static class HexHelper
     {
-        static Regex regexHex = new Regex(@"\A\b(0[xX]){0,1}[0-9a-fA-F]+\b\Z", RegexOptions.Compiled); //@"\A\b(0[xX])?[0-9a-fA-F]+\b\Z"
+        static readonly Regex regexHex = new Regex(@"\A\b(0[xX]){0,1}[0-9a-fA-F]+\b\Z", RegexOptions.Compiled); //@"\A\b(0[xX])?[0-9a-fA-F]+\b\Z"
         public static byte[] ToByteArray(this string hex)
         {
             if(hex.Length % 2 == 1)
@@ -40,7 +40,7 @@ namespace HexVisualizer
 
         private static int GetHexVal(char hex)
         {
-            int val = (int)hex;
+            var val = (int)hex;
             //For uppercase A-F letters:
             //return val - (val < 58 ? 48 : 55);
 

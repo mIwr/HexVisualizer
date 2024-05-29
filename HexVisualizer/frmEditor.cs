@@ -280,5 +280,16 @@ namespace HexVisualizer
         {
             newFind = true;
         }
+
+        protected override bool ProcessDialogKey(Keys keyData)
+        {
+            // Allow the escape key to close the form
+            if (ModifierKeys == Keys.None && keyData == Keys.Escape)
+            {
+                Close();
+                return true;
+            }
+            return base.ProcessDialogKey(keyData);
+        }
     }
 }

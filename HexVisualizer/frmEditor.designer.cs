@@ -86,6 +86,7 @@
             this.listView1.FullRowSelect = true;
             this.listView1.GridLines = true;
             this.listView1.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.listView1.HideSelection = false;
             this.listView1.Location = new System.Drawing.Point(0, 0);
             this.listView1.MultiSelect = false;
             this.listView1.Name = "listView1";
@@ -151,6 +152,7 @@
             // uiFindText
             // 
             this.uiFindText.CausesValidation = false;
+            this.uiFindText.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.uiFindText.Name = "uiFindText";
             this.uiFindText.Size = new System.Drawing.Size(300, 25);
             this.uiFindText.ToolTipText = "Type bytes string 0x... to search bytes, otherwise will search text";
