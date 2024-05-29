@@ -76,13 +76,10 @@ namespace HexVisualizer
             frmEditor.Visualize(data);
         }
 
-#if DEBUG
         public static void TestShowVisualizer(object objectToVisualize)
         {
             var visualizerHost = new VisualizerDevelopmentHost(objectToVisualize, typeof(StringVisualizer));
             visualizerHost.ShowVisualizer();
         }
-#endif
-        
     }
 }
