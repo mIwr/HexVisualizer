@@ -69,12 +69,10 @@ namespace HexVisualizer
             frmEditor.Visualize(data);
         }
 
-#if DEBUG
         public static void TestShowVisualizer(object objectToVisualize)
         {
             var visualizerHost = new VisualizerDevelopmentHost(objectToVisualize, typeof(ByteArrayVisualizer));
             visualizerHost.ShowVisualizer();
-        }
-#endif        
+        }      
     }
 }

@@ -50,6 +50,9 @@ jobs:
           name: uploaded_unsigned_vsix
           path: .\build\VsixHexVisualizer\Release\VsixHexVisualizer.vsix
           
+      - name: Create private directory
+        run: mkdir private
+          
       - name: Extract encoded private key
         run: echo ${{ secrets.PRIVATE_ENCODED }} > private\private.pfx.enc
         
